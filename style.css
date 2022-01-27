@@ -1,0 +1,12 @@
+.row {
+    display: flex;
+    border-color: red;
+    border-style: solid;
+}
+
+.cell {
+    width: 20px;
+    height: 20px;
+    border-style: solid;
+    border-color: red;
+}

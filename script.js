@@ -15,40 +15,73 @@ const gameboardModule = (() => {
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
                 if (_board[i][j] === '') {
-                    _board[i][j] = 'x'; // add event listener to allow changing to player.marker on click
+                    _board[i][j] = Player.marker;
+                    _board[i][j].removeEventListener('click', marker);
                 };
             };
         };
         return _board;
-    }
+    };
+    const displayBoard = () => {
+        const container = document.querySelector('#container');
+        for (let i = 0; i < 3; i++) {
+            const row = document.createElement('div');
+            row.setAttribute('class', 'row')
+            for (let j = 0; j < 3; j++) {
+                const cell = document.createElement('div');
+                cell.setAttribute('class', 'cell');
+                cell.textContent = _board[i][j];
+                row.append(cell);
+            };
+            container.append(row);
+        };
+    };
     return {
         makeBoard,
         markCell,
+        displayBoard,
     };
 })();
 
-
-// Cell marker module
-
 // Player Factory
 
-const player = (name, marker) => {
-    let score = 0;
+const Player = (name, marker) => {
     const getName = () => name;
-    const getMarker = () => marker;
-
+    const marker = () => marker;
+    return {getName, marker,}
 };
 
-// Turn Module
-const turnModule = (() => {
-    let turn;
-    if (turn == player) {
-        turn = computer;
-    } else if (turn == computer) {
-        turn = player;
-    };
-    return turn;
-})
+// Game module
 
-// Score module
+const game = (() => {
+    const player1 = Player('Oli', 'X'); // obtain name from input
+    const player2 = () => {
+        if (input === '', '0') {
+            //create AI
+        } else {
+            Player("Bilbo", '0');
+        }
+    };
+    const changeTurn = () => {
+        let turn = player1
+        if (turn === player1) {
+            turn = player2;
+        } else if (turn === player2) {
+            turn = player1;
+        };
+        return turn;
+    }
+    const win = () => {
+
+    }
+    const incrementScore = () => {
+
+    }
+
+    return {
+         changeTurn,
+         player1,
+         player2,
+    }
+})();
 
