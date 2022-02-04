@@ -1,26 +1,14 @@
-
 const gameboardModule = (() => {
-    const _board = [];
+    const board = [];
     const makeBoard = () => {
         for (let i = 0; i < 3; i++) {
             const _row = [];
             for (let j = 0; j < 3; j++) {
                 _row.push('');
             };
-            _board.push(_row);
+            board.push(_row);
         };
-        return _board;
-    };
-    const markCell = () => {
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                if (_board[i][j] === '') {
-                    _board[i][j] = Player.marker;
-                    _board[i][j].removeEventListener('click', marker);
-                };
-            };
-        };
-        return _board;
+        return board;
     };
     const displayBoard = () => {
         const container = document.querySelector('#container');
@@ -30,7 +18,7 @@ const gameboardModule = (() => {
             for (let j = 0; j < 3; j++) {
                 const cell = document.createElement('div');
                 cell.setAttribute('class', 'cell');
-                cell.textContent = _board[i][j];
+                cell.textContent = board[i][j];
                 row.append(cell);
             };
             container.append(row);
@@ -38,50 +26,58 @@ const gameboardModule = (() => {
     };
     return {
         makeBoard,
-        markCell,
         displayBoard,
+        board,
     };
 })();
 
 // Player Factory
 
-const Player = (name, marker) => {
-    const getName = () => name;
-    const marker = () => marker;
-    return {getName, marker,}
+const Player = (marker) => {
+    const getMarker = () => marker;
+    return {getMarker,}
 };
+
+gameboardModule.makeBoard();
+gameboardModule.displayBoard();
 
 // Game module
 
 const game = (() => {
-    const player1 = Player('Oli', 'X'); // obtain name from input
-    const player2 = () => {
-        if (input === '', '0') {
-            //create AI
+    const player1 = Player('X');
+    const player2 = Player('O');
+
+    let activePlayer = player1;
+
+    const changeActivePlayer = () => {
+        if (activePlayer == player1) {
+            activePlayer = player2;
         } else {
-            Player("Bilbo", '0');
-        }
-    };
-    const changeTurn = () => {
-        let turn = player1
-        if (turn === player1) {
-            turn = player2;
-        } else if (turn === player2) {
-            turn = player1;
+            activePlayer = player1;
         };
-        return turn;
-    }
-    const win = () => {
+    };
 
-    }
-    const incrementScore = () => {
-
-    }
+    const markCells = () => {
+        const cell = document.querySelectorAll('.cell')
+        for (let i = 0; i < cell.length; i++) {
+            cell[i].addEventListener('click', () => {
+                gameboardModule.board[i] = activePlayer.getMarker();
+                cell[i].textContent = activePlayer.getMarker();
+                changeActivePlayer();
+                console.log('hi');
+            });
+        };
+    };
 
     return {
-         changeTurn,
-         player1,
-         player2,
-    }
+        activePlayer,
+        changeActivePlayer,
+        markCells,
+    };
 })();
 
+game.markCells();
+
+
+ /* 
+const incrementScore = () => {} */
