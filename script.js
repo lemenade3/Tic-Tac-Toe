@@ -14,7 +14,7 @@ const gameboardModule = (() => {
         const container = document.querySelector('#container');
         for (let i = 0; i < 3; i++) {
             const row = document.createElement('div');
-            row.setAttribute('class', 'row')
+            row.setAttribute('class', 'row');
             for (let j = 0; j < 3; j++) {
                 const cell = document.createElement('div');
                 cell.setAttribute('class', 'cell');
@@ -27,7 +27,6 @@ const gameboardModule = (() => {
     return {
         makeBoard,
         displayBoard,
-        board,
     };
 })();
 
@@ -35,7 +34,7 @@ const gameboardModule = (() => {
 
 const Player = (marker) => {
     const getMarker = () => marker;
-    return {getMarker,}
+    return {getMarker,};
 };
 
 gameboardModule.makeBoard();
@@ -61,23 +60,38 @@ const game = (() => {
         const cell = document.querySelectorAll('.cell')
         for (let i = 0; i < cell.length; i++) {
             cell[i].addEventListener('click', () => {
-                gameboardModule.board[i] = activePlayer.getMarker();
-                cell[i].textContent = activePlayer.getMarker();
-                changeActivePlayer();
-                console.log('hi');
+                if (cell[i].textContent === '') {
+                    cell[i].textContent = activePlayer.getMarker();
+                    checkWin();
+                    changeActivePlayer();
+                };
             });
         };
     };
 
+    const checkWin = () => {
+        const cell = document.querySelectorAll('.cell');
+        const board = [];
+        for (let i = 0; i < cell.length; i++) {
+            board.push(cell[i].textContent);
+        };
+
+        const bC = [
+            [board[0],board[1],board[2]],
+            [board[3],board[4],board[5]],
+            [board[6],board[7],board[8]]
+        ];
+
+        const findVertical = () => {
+            
+        }
+    };
+
     return {
-        activePlayer,
-        changeActivePlayer,
         markCells,
+        checkWin,
     };
 })();
 
 game.markCells();
 
-
- /* 
-const incrementScore = () => {} */
