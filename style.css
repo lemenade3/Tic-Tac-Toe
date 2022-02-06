@@ -1,13 +1,30 @@
+body {
+    background-color: #2F2FA2;
+    font-family: 'Comforter', cursive;
+    color: #F64C72;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-size: 8em;
+    margin: 0.1em;
+}
+
 .row {
     display: flex;
-    border-color: red;
-    border-style: solid;
-    width: auto;
+    width: fit-content;
 }
 
 .cell {
+    display: flex;
     width: 100px;
     height: 100px;
-    border-style: solid;
-    border-color: red;
+    border-radius: 20px;
+    background-color: #242582;
+    margin: 5px;
+    align-items: center;
+    justify-content: center;
+    font-size: 5em;
 }

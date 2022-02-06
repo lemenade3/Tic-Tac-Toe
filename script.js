@@ -32,19 +32,35 @@ const gameboardModule = (() => {
 
 // Player Factory
 
-const Player = (marker) => {
+const Player = (marker, name) => {
     const getMarker = () => marker;
-    return {getMarker,};
+    const getName = () => name;
+    const setName = () => {
+        let inputName = document.querySelector('#inputName').value;
+        name = inputName
+    }
+    return {getMarker, getName, setName,};
 };
 
 gameboardModule.makeBoard();
 gameboardModule.displayBoard();
 
+const player1 = Player('X', 'Player 1');
+const player2 = Player('O', 'Player 2');
+
+const commitP1 = document.querySelector('#commitP1');
+commitP1.addEventListener('click', () => {
+    player1.setName();
+});
+
+const commitP2 = document.querySelector('#commitP2');
+commitP2.addEventListener('click', () => {
+    player2.setName();
+});
+
 // Game module
 
 const game = (() => {
-    const player1 = Player('X');
-    const player2 = Player('O');
 
     let activePlayer = player1;
 
@@ -82,9 +98,21 @@ const game = (() => {
             [board[6],board[7],board[8]]
         ];
 
-        const findVertical = () => {
-            
+        const declareWinner = () => {
+            winner = document.querySelector('#winner');
+            winner.textContent = `The winner is ${activePlayer.getName()}!`;
         }
+        
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (bC[i][0] === activePlayer.getMarker() && bC[i][1] === activePlayer.getMarker() && bC[i][2] === activePlayer.getMarker() || bC[0][j] === activePlayer.getMarker() && bC[1][j] === activePlayer.getMarker() && bC[2][j] === activePlayer.getMarker() || bC[0][0] === activePlayer.getMarker() && bC[1][1] === activePlayer.getMarker() && bC[2][2] === activePlayer.getMarker() || bC[0][2] === activePlayer.getMarker() && bC[1][1] === activePlayer.getMarker() && bC[2][0] === activePlayer.getMarker()) {
+                    declareWinner()
+                    break
+                } else {
+                    console.log('draw')
+                } // Need to find a cleaner way to do this, code checks if symbols match in each row, then in each column then across both diagonals
+            };
+        };
     };
 
     return {
