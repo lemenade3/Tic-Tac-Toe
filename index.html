@@ -7,15 +7,26 @@
     <title>Tic-Tac-Toe</title>
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="style.css">
-    <style>@import url('https://fonts.googleapis.com/css2?family=Comforter&display=swap');</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comforter&family=Nunito&display=swap');
+        </style>
 </head>
 <body>
     <h1>Tic-Tac-Toe</h1>
     <div id="container"></div>
-    <button id="commitP1">commit p1</button>
-    <button id="commitP2">commit p2</button>
-    <label for="inputName">Input Name:</label>
-    <input type="text" id="inputName" name="inputName"><br><br>
-    <div id="winner"></div>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button id="twoPlayer">2P</button>
+            <button id="computer">AI</button>
+        </div>
+    </div>
+
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <div id="winner"></div>
+            <button id="newGame">New Game</button>
+        </div>
+    </div>
 </body>
 </html>

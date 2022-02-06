@@ -28,3 +28,52 @@ h1 {
     justify-content: center;
     font-size: 5em;
 }
+
+button {
+    height: 220px;
+    width: 45%;
+    background-color: #242582;
+    color: #F64C72;
+    border-style: none;
+    border-radius: 20px;
+    margin: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 5em;
+}
+
+button:hover {
+    background-color: #F64C72;
+    color: #242582;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+  }
+  
+  .modal-content {
+    background-color: #2F2FA2;
+    margin: 15% auto;
+    padding: 20px;
+    width: 40%;
+    height: 260px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #winModal {
+      display: none;
+      font-size: 3em;
+  }
+
+  #newGame {
+      font-size: 1em;
+      margin-left: 40px;
+  }

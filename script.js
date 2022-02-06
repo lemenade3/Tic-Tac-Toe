@@ -24,9 +24,16 @@ const gameboardModule = (() => {
             container.append(row);
         };
     };
+    const removeBoard = () => {
+        const row = document.querySelectorAll('.row');
+        for (let i = 0; i < row.length; i++) {
+            row[i].remove();
+        };
+    };
     return {
         makeBoard,
         displayBoard,
+        removeBoard,
     };
 })();
 
@@ -35,28 +42,11 @@ const gameboardModule = (() => {
 const Player = (marker, name) => {
     const getMarker = () => marker;
     const getName = () => name;
-    const setName = () => {
-        let inputName = document.querySelector('#inputName').value;
-        name = inputName
-    }
-    return {getMarker, getName, setName,};
+    return {getMarker, getName,};
 };
-
-gameboardModule.makeBoard();
-gameboardModule.displayBoard();
 
 const player1 = Player('X', 'Player 1');
 const player2 = Player('O', 'Player 2');
-
-const commitP1 = document.querySelector('#commitP1');
-commitP1.addEventListener('click', () => {
-    player1.setName();
-});
-
-const commitP2 = document.querySelector('#commitP2');
-commitP2.addEventListener('click', () => {
-    player2.setName();
-});
 
 // Game module
 
@@ -100,26 +90,50 @@ const game = (() => {
 
         const declareWinner = () => {
             winner = document.querySelector('#winner');
-            winner.textContent = `The winner is ${activePlayer.getName()}!`;
+            winner.textContent = `${activePlayer.getMarker()} Wins!`;
+        }
+
+        const declareDraw = () => {
+            winner = document.querySelector('#winner');
+            winner.textContent = `It's a Draw...`;
         }
         
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
                 if (bC[i][0] === activePlayer.getMarker() && bC[i][1] === activePlayer.getMarker() && bC[i][2] === activePlayer.getMarker() || bC[0][j] === activePlayer.getMarker() && bC[1][j] === activePlayer.getMarker() && bC[2][j] === activePlayer.getMarker() || bC[0][0] === activePlayer.getMarker() && bC[1][1] === activePlayer.getMarker() && bC[2][2] === activePlayer.getMarker() || bC[0][2] === activePlayer.getMarker() && bC[1][1] === activePlayer.getMarker() && bC[2][0] === activePlayer.getMarker()) {
+                    let winModal = document.querySelector('#winModal')
                     declareWinner()
-                    break
-                } else {
-                    console.log('draw')
-                } // Need to find a cleaner way to do this, code checks if symbols match in each row, then in each column then across both diagonals
+                    winModal.style.display = "block";
+                    gameboardModule.removeBoard();
+                } else if (bC[0][0] != '' && bC[0][1] != '' && bC[0][2] != '' && bC[1][0] != '' && bC[1][1] != '' && bC[1][2] != '' && bC[2][0] != '' && bC[2][1] != '' && bC[2][2] != '') {
+                    declareDraw();
+                    winModal.style.display = "block";
+                    gameboardModule.removeBoard();
+                };
+                // Need to find a cleaner way to do this, code checks if symbols match in each row, then in each column then across both diagonals
             };
         };
     };
+
+    let modal = document.querySelector("#modal");
+    
+    let twoPlayer = document.querySelector('#twoPlayer')
+    twoPlayer.addEventListener('click', () => {
+        gameboardModule.makeBoard();
+        gameboardModule.displayBoard();
+        game.markCells();
+        modal.style.display = "none";
+        activePlayer = player1;
+    });
+    
+    let newGame = document.querySelector('#newGame');
+    newGame.addEventListener('click', () => {
+        modal.style.display = "block";
+        winModal.style.display = "none";
+    });
 
     return {
         markCells,
         checkWin,
     };
 })();
-
-game.markCells();
-
