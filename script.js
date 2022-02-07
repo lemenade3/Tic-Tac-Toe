@@ -124,6 +124,19 @@ const game = (() => {
         modal.style.display = "none";
         activePlayer = player1;
     });
+
+    const selectComputer = document.querySelector('#computer');
+    selectComputer.addEventListener('click', () => {
+        gameboardModule.makeBoard();
+        gameboardModule.displayBoard();
+        game.markCells();
+        modal.style.display = "none";
+        activePlayer = player1;
+        const cells = document.querySelectorAll('.cell')
+        for (let i = 0; i < cells.length; i++) {
+            cells[i].addEventListener('click', () => {aiModule.makeMove()});
+        };
+    });
     
     let newGame = document.querySelector('#newGame');
     newGame.addEventListener('click', () => {
@@ -139,7 +152,6 @@ const game = (() => {
 })();
 
 const aiModule = (() => {
-    const selectComputer = document.querySelector('#computer');
 
     const makeMove = () => {
         const cells = document.querySelectorAll('.cell')
@@ -147,23 +159,12 @@ const aiModule = (() => {
             const randomMove = cells[Math.floor(Math.random() * cells.length)];
             if (randomMove.textContent === '') {
                 randomMove.textContent = player2.getMarker();
+                game.checkWin();
                 game.changeActivePlayer();
                 break
             };
         };
     };
-
-    selectComputer.addEventListener('click', () => {
-        gameboardModule.makeBoard();
-        gameboardModule.displayBoard();
-        game.markCells();
-        modal.style.display = "none";
-        game.activePlayer = player1;
-        const cells = document.querySelectorAll('.cell')
-        for (let i = 0; i < cells.length; i++) {
-            cells[i].addEventListener('click', () => {makeMove()});
-        };
-    });
 
     return {
         makeMove,
