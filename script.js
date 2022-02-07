@@ -39,14 +39,13 @@ const gameboardModule = (() => {
 
 // Player Factory
 
-const Player = (marker, name) => {
+const Player = (marker) => {
     const getMarker = () => marker;
-    const getName = () => name;
-    return {getMarker, getName,};
+    return {getMarker,};
 };
 
-const player1 = Player('X', 'Player 1');
-const player2 = Player('O', 'Player 2');
+const player1 = Player('X');
+const player2 = Player('O');
 
 // Game module
 
@@ -135,5 +134,38 @@ const game = (() => {
     return {
         markCells,
         checkWin,
+        changeActivePlayer,
     };
+})();
+
+const aiModule = (() => {
+    const selectComputer = document.querySelector('#computer');
+
+    const makeMove = () => {
+        const cells = document.querySelectorAll('.cell')
+        while (true) {
+            const randomMove = cells[Math.floor(Math.random() * cells.length)];
+            if (randomMove.textContent === '') {
+                randomMove.textContent = player2.getMarker();
+                game.changeActivePlayer();
+                break
+            };
+        };
+    };
+
+    selectComputer.addEventListener('click', () => {
+        gameboardModule.makeBoard();
+        gameboardModule.displayBoard();
+        game.markCells();
+        modal.style.display = "none";
+        game.activePlayer = player1;
+        const cells = document.querySelectorAll('.cell')
+        for (let i = 0; i < cells.length; i++) {
+            cells[i].addEventListener('click', () => {makeMove()});
+        };
+    });
+
+    return {
+        makeMove,
+    }
 })();
