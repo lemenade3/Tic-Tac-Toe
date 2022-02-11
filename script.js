@@ -155,18 +155,32 @@ const aiModule = (() => {
 
     const makeMove = () => {
         const cells = document.querySelectorAll('.cell')
-        while (true) {
-            const randomMove = cells[Math.floor(Math.random() * cells.length)];
-            if (randomMove.textContent === '') {
-                randomMove.textContent = player2.getMarker();
-                game.checkWin();
-                game.changeActivePlayer();
-                break
+        let bestScore = -Infinity;
+        for (let i = 0; i < cells[i].length; i++) {
+            cells[i].textContent = player2.getMarker();
+            score = minimax(cells);
+            if (score > bestScore) {
+                bestScore = score;
             };
-        };
+            cells[i].textContent = '';
+        }
+        return cells[i]
+    };
+
+    function minimax(cells, maximisingPlayer) {
     };
 
     return {
         makeMove,
     }
 })();
+
+/* while (true) {
+    const randomMove = cells[Math.floor(Math.random() * cells.length)];
+    if (randomMove.textContent === '') {
+        randomMove.textContent = player2.getMarker();
+        game.checkWin();
+        game.changeActivePlayer();
+        break
+    };
+}; */
