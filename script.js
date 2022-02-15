@@ -37,6 +37,10 @@ const gameboardModule = (() => {
     };
 })();
 
+
+
+
+
 // Player Factory
 
 const Player = (marker) => {
@@ -46,6 +50,10 @@ const Player = (marker) => {
 
 const player1 = Player('X');
 const player2 = Player('O');
+
+
+
+
 
 // Game module
 
@@ -61,6 +69,8 @@ const game = (() => {
         };
     };
 
+    const resetPlayers = () => {activePlayer = player1};
+
     const markCells = () => {
         const cell = document.querySelectorAll('.cell')
         for (let i = 0; i < cell.length; i++) {
@@ -75,7 +85,6 @@ const game = (() => {
     };
 
     const checkWin = () => {
-        let result;
         const cell = document.querySelectorAll('.cell');
         const board = [];
         for (let i = 0; i < cell.length; i++) {
@@ -91,13 +100,11 @@ const game = (() => {
         const declareWinner = () => {
             winner = document.querySelector('#winner');
             winner.textContent = `${activePlayer.getMarker()} Wins!`;
-            result = activePlayer.getMarker();
         }
 
         const declareDraw = () => {
             winner = document.querySelector('#winner');
             winner.textContent = `It's a Draw...`;
-            result = 'draw';
         }
         
         for (let i = 0; i < 3; i++) {
@@ -112,7 +119,8 @@ const game = (() => {
                     declareWinner()
                     winModal.style.display = "block";
                     gameboardModule.removeBoard();
-                } else if (bC[0][0] != '' && bC[0][1] != '' && bC[0][2] != '' && bC[1][0] != '' && bC[1][1] != '' && bC[1][2] != '' && bC[2][0] != '' && bC[2][1] != '' && bC[2][2] != '') {
+                } else if (bC[0][0] != '' && bC[0][1] != '' && bC[0][2] != '' && bC[1][0] != '' &&
+                 bC[1][1] != '' && bC[1][2] != '' && bC[2][0] != '' && bC[2][1] != '' && bC[2][2] != '') {
                     declareDraw();
                     winModal.style.display = "block";
                     gameboardModule.removeBoard();
@@ -120,9 +128,20 @@ const game = (() => {
                 // Need to find a cleaner way to do this, code checks if symbols match in each row, then in each column then across both diagonals
             };
         };
-        return result;
     };
 
+    return {
+        markCells,
+        checkWin,
+        changeActivePlayer,
+        resetPlayers,
+    };
+})();
+
+
+
+
+const displayModule = (() => {
     let modal = document.querySelector("#modal");
     
     let twoPlayer = document.querySelector('#twoPlayer')
@@ -131,7 +150,7 @@ const game = (() => {
         gameboardModule.displayBoard();
         game.markCells();
         modal.style.display = "none";
-        activePlayer = player1;
+        game.resetPlayers();
     });
 
     const selectComputer = document.querySelector('#computer');
@@ -140,10 +159,10 @@ const game = (() => {
         gameboardModule.displayBoard();
         game.markCells();
         modal.style.display = "none";
-        activePlayer = player1;
+        game.resetPlayers();
         const cells = document.querySelectorAll('.cell')
         for (let i = 0; i < cells.length; i++) {
-            cells[i].addEventListener('click', () => {aiModule.makeMove()});
+            cells[i].addEventListener('click', () => {aiModule.aiMove()},{once: true}); // This line allows double clicking on opponents cell which breaks the game.
         };
     });
     
@@ -152,17 +171,15 @@ const game = (() => {
         modal.style.display = "block";
         winModal.style.display = "none";
     });
-
-    return {
-        markCells,
-        checkWin,
-        changeActivePlayer,
-    };
 })();
+
+
+
+
 
 const aiModule = (() => {
 
-    const makeMove = () => {
+    const aiMove = () => {
         findBestMove();
         game.checkWin();
         game.changeActivePlayer();
@@ -186,7 +203,7 @@ const aiModule = (() => {
         bestMove.textContent = player2.getMarker();
     }
 
-    function minimax(cells, depth, minimisingPlayer) {
+    function minimax(cells, depth, maximisingPlayer) {
 
         function findResult() {
             let result;
@@ -210,7 +227,7 @@ const aiModule = (() => {
             return findResult();
         };
 
-        if (minimisingPlayer) {
+        if (maximisingPlayer) {
             let bestScore = Infinity;
             for (let i = 0; i < 9; i++) {
                 if (cells[i].textContent === '') {
@@ -240,7 +257,7 @@ const aiModule = (() => {
     };
 
     return {
-        makeMove,
+        aiMove,
     }
 })();
 
