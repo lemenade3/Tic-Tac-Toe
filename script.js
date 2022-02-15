@@ -1,5 +1,7 @@
 const gameboardModule = (() => {
+
     const board = [];
+
     const makeBoard = () => {
         for (let i = 0; i < 3; i++) {
             const _row = [];
@@ -10,6 +12,7 @@ const gameboardModule = (() => {
         };
         return board;
     };
+
     const displayBoard = () => {
         const container = document.querySelector('#container');
         for (let i = 0; i < 3; i++) {
@@ -24,12 +27,14 @@ const gameboardModule = (() => {
             container.append(row);
         };
     };
+
     const removeBoard = () => {
         const row = document.querySelectorAll('.row');
         for (let i = 0; i < row.length; i++) {
             row[i].remove();
         };
     };
+    
     return {
         makeBoard,
         displayBoard,
